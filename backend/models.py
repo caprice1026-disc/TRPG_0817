@@ -29,6 +29,7 @@ class Player(db.Model):
     
     def level_up(self):
         """レベルアップとステータスの更新、経験値リセット"""
+        # 経験値の計算ロジックを書く必要あり
         self.level += 1
         self.strength += 2
         self.agility += 2
@@ -37,22 +38,52 @@ class Player(db.Model):
         self.dexerity += 2
         self.vitality += 2
         self.luck += 2
-        self.health_points += 20
-        self.mana_points += 10
-        self.experience = 0  # Reset experience for new level
+        # ヘルス及びマナを回復させる場合は以下のコメントアウトを外す
+        # ヘルスとマナをいじるとロジックが複雑になるので一旦コメントアウト
+        # self.health_points += 20
+        # self.mana_points += 10
+        self.experience = 0  # 経験値をリセット
+        db.session.commit()
+        
+    def take_damage(self, damage):
+        """ダメージを受けた際にプレイヤーのHPを減少させる"""
+        self.health_points -= damage
+        if self.health_points <= 0:
+            self.health_points = 0  # プレイヤーのHPが0以下にならないようにする
+            # プレイヤーが死亡した場合の処理を書く
+        db.session.commit()
+        
+    def restore_health(self, amount):
+        """プレイヤーのHPを回復させる"""
+        self.health_points += amount
+        if self.health_points > 100:  # レベルアップの関数と競合しないようにする
+            self.health_points = 100
         db.session.commit()
     
     def __repr__(self):
+        """プレイヤーの情報を文字列で返す"""
         return f"<Player {self.name} (Level: {self.level})>"
+
+    def add_item(self, item_name, description=""):
+        """プレイヤーのアイテムを追加する"""
+        new_item = Item(name=item_name, description=description)
+        db.session.add(new_item)
+        self.items.append(new_item)
+        db.session.commit()
+
+    def remove_item(self, item):
+        """Removes an item from the player's inventory."""
+        if item in self.items:
+            self.items.remove(item)
+            db.session.commit()
     
 class Item(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(100), nullable=False)
     description = db.Column(db.String(200))
-    weight = db.Column(db.Float, default=0.0)
-    value = db.Column(db.Integer, default=0)
 
     def __repr__(self):
+        """アイテムの情報を文字列で返す"""
         return f"<Item {self.name} (Value: {self.value})>"
 
 
