@@ -1,6 +1,6 @@
 # 基本設定
 DEBUG = True
-DATABASE_URI = os.environ.get('DATABASE_URI', 'sqlite:///default.db')
+SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URI', 'sqlite:///default.db')
 #環境変数を一括で読み込むなどは後で考慮する
 OPENAI_API_KEY = os.getenv()
 
