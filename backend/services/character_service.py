@@ -13,3 +13,4 @@ class CharacterAPI(Resource):
         #新しいPlayerインスタンスをデータベースに追加
         db.session.add(new_player)
         pass
+    
