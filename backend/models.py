@@ -104,6 +104,7 @@ class Item(db.Model):
         """アイテムの情報を文字列で返す"""
         return f"<Item {self.name} (Value: {self.value})>"
 
+"""旧World 一時的に残してあるが後で削除すること
 class World(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(64), unique=True, nullable=False)  # ハッシュ値
@@ -119,4 +120,5 @@ class World(db.Model):
         """世界観を元にハッシュ値を作成、それをもとにPlayerと紐づける"""
         hash_input = f"{self.chaos_level}-{self.description}-{self.setting}"
         return hashlib.sha256(hash_input.encode()).hexdigest()[:64]  # ハッシュを生成して64文字に制限
+"""
 
