@@ -3,3 +3,4 @@ flask
 flask-restx
 celery
 redis
+openai
