@@ -2,10 +2,13 @@ from flask import Flask, jsonify,Response,sse
 from flask_sqlalchemy import SQLAlchemy
 from models import db
 import time
+from routes.character import register_character_routes
 
 app = Flask(__name__)
 app.config.from_pyfile('config.py')
 db.init_app(app)
+# Blueprint登録
+register_character_routes(app)
 
 with app.app_context():
     db.create_all()
