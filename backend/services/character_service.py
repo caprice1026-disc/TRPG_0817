@@ -1,6 +1,8 @@
 from models import db, Player, Item, World
 from sqlalchemy.exc import SQLAlchemyError
 
+# models由来のメソッドを確認しておくこと
+
 class CharacterService:
     def create_character(self, name, character_class, back_story, world_uuid):
         """新しいキャラクターを作成する"""
@@ -22,13 +24,37 @@ class CharacterService:
             db.session.rollback()
             return {"message": "Error creating character", "error": str(e)}, 500
 
+    def get_all_characters(self):
+        """すべてのキャラクターを取得する"""
+        try:
+            players = Player.query.all()
+            characters = [{
+                "uuid": player.uuid,
+                "name": player.name,
+                "character_class": player.character_class,
+                "level": player.level
+            } for player in players]
+            return characters
+        except SQLAlchemyError as e:
+            return {"message": "Error fetching characters", "error": str(e)}, 500
+
     def get_character(self, player_uuid):
         """指定したUUIDのキャラクターを取得する"""
-        player = Player.query.filter_by(uuid=player_uuid).first()
-        if player:
-            return player
-        else:
-            return None
+        try:
+            player = Player.query.filter_by(uuid=player_uuid).first()
+            if player:
+                character = {
+                    "uuid": player.uuid,
+                    "name": player.name,
+                    "character_class": player.character_class,
+                    "level": player.level,
+                    "health_points": player.health_points
+                }
+                return character
+            else:
+                return None
+        except SQLAlchemyError as e:
+            return {"message": "Error fetching character", "error": str(e)}, 500
 
     def update_character(self, player_uuid, data):
         """キャラクター情報を更新する"""
@@ -38,9 +64,13 @@ class CharacterService:
                 return {"message": "Character not found"}, 404
 
             # 更新可能なフィールドを順次更新
-            for key, value in data.items():
-                if hasattr(player, key):
-                    setattr(player, key, value)
+            updatable_fields = ['name', 'character_class', 'back_story', 'level', 'experience',
+                                'health_points', 'mana_points', 'strength', 'agility',
+                                'intelligence', 'charisma', 'dexterity', 'vitality', 'luck', 'gold']
+
+            for key in updatable_fields:
+                if key in data:
+                    setattr(player, key, data[key])
 
             db.session.commit()
             return {"message": "Character updated successfully"}, 200
@@ -69,7 +99,7 @@ class CharacterService:
             if not player:
                 return {"message": "Character not found"}, 404
 
-            player.level_up()  # models.pyで定義したメソッドを呼び出し
+            player.level_up()  
             db.session.commit()
             return {"message": "Character leveled up successfully"}, 200
         except SQLAlchemyError as e:
@@ -83,7 +113,7 @@ class CharacterService:
             if not player:
                 return {"message": "Character not found"}, 404
 
-            player.take_damage(damage)  # models.pyで定義したメソッドを呼び出し
+            player.take_damage(damage)  
             db.session.commit()
             return {"message": f"Character took {damage} damage"}, 200
         except SQLAlchemyError as e:
@@ -97,7 +127,7 @@ class CharacterService:
             if not player:
                 return {"message": "Character not found"}, 404
 
-            player.restore_health(amount)  # models.pyで定義したメソッドを呼び出し
+            player.restore_health(amount)  
             db.session.commit()
             return {"message": f"Character restored {amount} health points"}, 200
         except SQLAlchemyError as e:
@@ -113,7 +143,7 @@ class CharacterService:
 
             new_item = Item(name=item_name, description=description)
             db.session.add(new_item)
-            player.items.append(new_item)
+            player.add_item(new_item)  
             db.session.commit()
             return {"message": f"Item '{item_name}' added to character"}, 200
         except SQLAlchemyError as e:
@@ -130,7 +160,7 @@ class CharacterService:
                 return {"message": "Character or Item not found"}, 404
 
             if item in player.items:
-                player.items.remove(item)
+                player.remove_item(item)  
                 db.session.commit()
                 return {"message": f"Item '{item.name}' removed from character"}, 200
             else:
