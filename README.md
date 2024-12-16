@@ -31,8 +31,6 @@ flowchart TD
     C --> GM
     I --> GM
     W --> GM
-
-    GM --> O
 ```
 
 　```mermaid
