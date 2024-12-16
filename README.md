@@ -13,26 +13,30 @@ https://qiita.com/Maki-HamarukiLab/items/addeffc7ade848a4807a
 ```mermaid
 flowchart TD
 
+    %% エージェント定義
     U[ユーザー]
-    GM[ゲームマスターエージェント]
-    B[戦闘エージェント]
-    C[キャラ管理エージェント]
-    I[アイテム管理エージェント]
-    W[ワールド管理エージェント]
-    O[出力]
+    GM_IN[ゲームマスターエージェント(入力)]
+    BA[戦闘エージェント]
+    CA[キャラ管理エージェント]
+    IA[アイテム管理エージェント]
+    WA[ワールド管理エージェント]
+    GM_OUT[ゲームマスターエージェント(出力)]
+    OUT[出力]
 
-    U --> GM
-    GM --> B
-    GM --> C
-    GM --> I
-    GM --> W
+    %% 流れ定義
+    U --> GM_IN
 
-    B --> GM
-    C --> GM
-    I --> GM
-    W --> GM
+    GM_IN --> BA
+    GM_IN --> CA
+    GM_IN --> IA
+    GM_IN --> WA
 
-    GM --> O
+    BA --> GM_OUT
+    CA --> GM_OUT
+    IA --> GM_OUT
+    WA --> GM_OUT
+
+    GM_OUT --> OUT
 ```
 
 
