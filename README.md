@@ -13,7 +13,6 @@ https://qiita.com/Maki-HamarukiLab/items/addeffc7ade848a4807a
 ```mermaid
     flowchart TD
 
-    %% エージェント定義
     U[ユーザー]
     GM_IN[ゲームマスターエージェント(入力)]
     BA[戦闘エージェント]
@@ -23,7 +22,6 @@ https://qiita.com/Maki-HamarukiLab/items/addeffc7ade848a4807a
     GM_OUT[ゲームマスターエージェント(出力)]
     OUT[出力]
 
-    %% 流れ定義
     U --> GM_IN
 
     GM_IN --> BA
