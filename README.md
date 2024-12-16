@@ -31,11 +31,9 @@ flowchart TD
     C --> GM
     I --> GM
     W --> GM
-```
 
-　```mermaid
-　info
-　```
+    GM --> O
+```
 
 
 TRPGを実装するために、以下のエージェントを実装
