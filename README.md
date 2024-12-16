@@ -10,6 +10,7 @@ https://qiita.com/Maki-HamarukiLab/items/addeffc7ade848a4807a
 
 ## エージェント
 
+```mermaid
 flowchart TD
 
     U[ユーザー]
@@ -32,6 +33,7 @@ flowchart TD
     W --> GM
 
     GM --> O
+
 
 TRPGを実装するために、以下のエージェントを実装
 
