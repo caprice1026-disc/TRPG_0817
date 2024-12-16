@@ -11,7 +11,7 @@ https://qiita.com/Maki-HamarukiLab/items/addeffc7ade848a4807a
 ## エージェント
 
 ```mermaid
-flowchart TD
+    flowchart TD
 
     %% エージェント定義
     U[ユーザー]
