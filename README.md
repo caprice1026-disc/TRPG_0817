@@ -14,12 +14,12 @@ https://qiita.com/Maki-HamarukiLab/items/addeffc7ade848a4807a
 flowchart TD
 
     U[ユーザー]
-    GM_IN[ゲームマスターエージェント(入力)]
+    GM_IN[入力ゲームマスターエージェント]
     BA[戦闘エージェント]
     CA[キャラ管理エージェント]
     IA[アイテム管理エージェント]
     WA[ワールド管理エージェント]
-    GM_OUT[ゲームマスターエージェント(出力)]
+    GM_OUT[出力ゲームマスターエージェント]
     OUT[出力]
 
     U --> GM_IN
