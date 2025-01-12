@@ -76,7 +76,7 @@ class Player(db.Model):
     def restore_health(self, amount):
         """プレイヤーのHPを回復させる"""
         self.health_points += amount
-        if self.health_points > 100:  # レベルアップの関数と競合しないようにする
+        if self.health_points > 100:  # HPの上限を100に設定
             self.health_points = 100
         db.session.commit()
 
@@ -86,9 +86,13 @@ class Player(db.Model):
 
     def add_item(self, item_name, description=""):
         """プレイヤーのアイテムを追加する"""
-        new_item = Item(name=item_name, description=description)
-        db.session.add(new_item)
-        self.items.append(new_item)
+        existing_item = Item.query.filter_by(name=item_name).first()
+        if not existing_item:
+            new_item = Item(name=item_name, description=description)
+            db.session.add(new_item)
+            self.items.append(new_item)
+        else:
+            self.items.append(existing_item)
         db.session.commit()
 
     def remove_item(self, item):
